@@ -1,0 +1,17 @@
+#AI model 
+model:
+  - YOLOv8-Detection.tflite,https://huggingface.co/qualcomm/YOLOv8-Detection/resolve/main/YOLOv8-Detection.tflite?download=true
+
+model_label:
+  - coco.yaml,https://raw.githubusercontent.com/ultralytics/ultralytics/refs/heads/main/ultralytics/cfg/datasets/coco.yaml
+
+# apt packages
+apt:
+  - ros-humble-cv-bridge
+  - ros-dev-tools
+  - python3-opencv
+
+# python packages
+pip:
+  - numpy==1.24.4
+  - tensorflow
