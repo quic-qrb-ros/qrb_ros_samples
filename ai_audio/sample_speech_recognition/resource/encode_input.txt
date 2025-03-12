@@ -1,0 +1,1 @@
+/home/ubuntu/qirp-sdk/whisper/input/mel_input.raw

@@ -1,10 +1,32 @@
 # AI Samples Object detection
 
+## Overview
+
 The `object detection` sample enables a function that object detection case with qrb ros nodes.
 
 It captures the image topic from the ROS system and publishes the result with the `/yolo_detect_overlay/compressed`.
 
 This figure contains the basic messages and data transfer channels, with the relevant client/server and ROS node.![image](resource/images/pipeline.png)
+
+## Pipeline flow for Object detection
+
+|                           | Table : ROS nodes used in Object detection pipeline          |
+| ------------------------- | ------------------------------------------------------------ |
+| ROS node                  | Description                                                  |
+| `qrb_ros_camera `         | Send camera info to ros network                              |
+| `image_converter_node `   | Gets camera image topic , resize and convert from nv12 to rgb format |
+| `qrb_ros_yolo_processor ` | yolo model preprocess postprocess node                       |
+| `qrb_ros_nn_inference `   | run model with qualcomm qnn interface                        |
+
+|                                 | Table : ROS topics used in Object detection pipeline |                        |
+| ------------------------------- | ---------------------------------------------------- | ---------------------- |
+| ROS topic                       | Type                                                 | Published by           |
+| `/image`                        | `< sensor_msgs.msg.Image > `                         | qrb_ros_camera         |
+| `/image_convert`                | `< sensor_msgs/msg/Image> `                          | image_converter_node   |
+| `/yolo_raw_img `                | `< qrb_ros_tensor_list_msgs/msg/TensorList > `       | qrb_ros_yolo_processor |
+| `/qrb_inference_output_tensor ` | `< qrb_ros_tensor_list_msgs/msg/TensorList > `       | qrb_ros_nn_inference   |
+| `/yolo_detect_result `          | `< vision_msgs/msg/Detection2DArray > `              | qrb_ros_yolo_processor |
+| `/yolo_detect_overlay `         | `< sensor_msgs.msg.Image > `                         | qrb_ros_yolo_processor |
 
 ## Use cases on Ubuntu
 
@@ -17,7 +39,7 @@ This figure contains the basic messages and data transfer channels, with the rel
   (ssh) wget https://raw.githubusercontent.com/qualcomm-linux/meta-qcom-robotics-sdk/refs/heads/kirkstone/recipes-sdk/files/qirp-setup.sh
   ```
 
-### **Case 1: Run out-of-the-box Object detection** 
+### **Run  Object detection** 
 
 - On device,  run the following commands in a terminal to set up QIRP SDK and ROS2 environment.
 
@@ -40,62 +62,4 @@ Insrall ros as the link https://docs.ros.org/en/humble/Installation.html
 (ssh) export ROS_DOMAIN_ID=123
 (ssh) rqt
 ```
-
-### **Case 2: Build and run Object detection** 
-
-**Steps:**  
-
-1. Download projects 
-
-   	```
-   #download dependency ros node projects
-      	cd /home/ubuntu/qirp-sdk/src
-      	git clone https://github.com/quic-qrb-ros/qrb_ros_camera.git
-      	git clone https://github.com/quic-qrb-ros/qrb_ros_imu.git
-      	git clone https://github.com/quic-qrb-ros/lib_mem_dmabuf.git
-      	git clone https://github.com/quic-qrb-ros/qrb_ros_transport.git
-      	git clone https://github.com/quic-qrb-ros/qrb_ros_system_monitor.git
-      	git clone https://github.com/quic-qrb-ros/qrb_ros_yolo_processor.git 
-      	git clone https://github.com/quic-qrb-ros/qrb_ros_interfaces.git 
-	
-   #git clone samples
-      	git clone https://github.com/quic-qrb-ros/qrb_ros_samples.git
-   
-    #download ai model
-      	wget https://huggingface.co/qualcomm/YOLOv8-Detection/resolve/main/YOLOv8-Detection.tflite?download=true -O /home/ubuntu/qirp-sdk/model/YOLOv8-Detection.tflite -O /home/ubuntu/qirp-sdk/model/YOLOv8-Detection.tflite
-      	wget https://raw.githubusercontent.com/ultralytics/ultralytics/refs/heads/main/ultralytics/cfg/datasets/coco.yaml  -O /home/ubuntu/qirp-sdk/model/coco.yaml  -O /home/ubuntu/qirp-sdk/model/coco.yaml  
-   ```
-   
-2.  build ros packages   	
-
-   ```
-   source /opt/ros/humble/setup.sh
-   colcon build --executor sequential
-   ```
-
-
-3. Run ros projects
-
-   Refer to Case1 "Run out-of-the-box Object detection steps"
-## Pipeline flow for Object detection
-
-|                           | Table : ROS nodes used in OCR-service pipeline               |
-| ------------------------- | ------------------------------------------------------------ |
-| ROS node                  | Description                                                  |
-| `qrb_ros_camera `         | Send camera info to ros network                              |
-| `image_converter_node `   | Gets camera image topic , resize and convert from nv12 to rgb format |
-| `qrb_ros_yolo_processor ` | yolo model preprocess postprocess node                       |
-| `qrb_ros_nn_inference `   | run model with qualcomm qnn interface                        |
-
-
-
-|                                 | Table : ROS topics used in OCR-service pipeline |                        |
-| ------------------------------- | ----------------------------------------------- | ---------------------- |
-| ROS topic                       | Type                                            | Published by           |
-| `/image`                        | `< sensor_msgs.msg.Image > `                    | qrb_ros_camera         |
-| `/image_convert`                | `< sensor_msgs/msg/Image> `                     | image_converter_node   |
-| `/yolo_raw_img `                | `< qrb_ros_tensor_list_msgs/msg/TensorList > `  | qrb_ros_yolo_processor |
-| `/qrb_inference_output_tensor ` | `< qrb_ros_tensor_list_msgs/msg/TensorList > `  | qrb_ros_nn_inference   |
-| `/yolo_detect_result `          | `< vision_msgs/msg/Detection2DArray > `         | qrb_ros_yolo_processor |
-| `/yolo_detect_overlay `         | `< sensor_msgs.msg.Image > `                    | qrb_ros_yolo_processor |
 
