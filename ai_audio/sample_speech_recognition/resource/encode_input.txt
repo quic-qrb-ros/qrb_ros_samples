@@ -1,1 +1,5 @@
+// Copyright (c) 2025 Qualcomm Innovation Center, Inc. All rights reserved.
+// SPDX-License-Identifier: BSD-3-Clause-Clear
+
+
 /home/ubuntu/qirp-sdk/whisper/input/mel_input.raw
