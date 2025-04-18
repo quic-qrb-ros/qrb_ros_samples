@@ -1,10 +1,12 @@
 # AI Samples Resnet101 Quantized
 
+## Overview
+
 ResNet101 is a machine learning model that can classify images from the Imagenet dataset. It can also be used as a backbone in building more complex models for specific use cases.
 
 `sample_resnet101 quantized` is a Python-based classify images ROS node that uses QNN for model inference. 
 
-For more information, please refer to  [QRB ROS Camera — Qualcomm QRB ROS main documentation](https://quic-qrb-ros.github.io/main/packages/qrb_ros_camera/index.html)
+For more information, please refer to  [qrb_ros_samples/ai_vision/sample_object_detection at main · quic-qrb-ros/qrb_ros_samples](https://github.com/quic-qrb-ros/qrb_ros_samples/tree/main/ai_vision/sample_resnet101_quantized)
 
 ![](./resource/glasses-output.png)
 
@@ -14,9 +16,17 @@ For more information, please refer to  [QRB ROS Camera — Qualcomm QRB ROS main
 
 ## ROS Nodes Used in Resnet101 Quantized
 
-| ROS Node             | Ros Topic                      | Type                         |
-| -------------------- | ------------------------------ | ---------------------------- |
-| `qrb_ros_resnet101 ` | `resnet101_quantized_results ` | `< sensor_msgs.msg.String> ` |
+| ROS Node                | Description                                                  |
+| ----------------------- | ------------------------------------------------------------ |
+| `qrb_ros_resnet101 `    | qrb_ros_resnet101 is a python-based ros jazzy packages realize classify images,  uses QNN htp as model backend. receive image topic , publish classify result topic. |
+| `image_publisher_node ` | image_publisher is  a ros jazzy packages, can publish image ros topic with local path. source link:[ros-perception/image_pipeline: An image processing pipeline for ROS.](https://github.com/ros-perception/image_pipeline) |
+
+## ROS Topics Used in Speech Recognition Pipeline
+
+| ROS Topic                      | Type                         | Published By            |
+| ------------------------------ | ---------------------------- | ----------------------- |
+| `resnet101_quantized_results ` | `< sensor_msgs.msg.String> ` | `qrb_ros_resnet101`     |
+| `image_raw `                   | `< sensor_msgs.msg.Image> `  | `image_publisher_node ` |
 
 ## Use cases on QCLINUX
 
@@ -54,9 +64,9 @@ scp sample_resnet101_quantized.tar.gz root@[ip-addr]:/home/
 scp model.tar.gz root@[ip-addr]:/opt/
 ssh root@[ip-addr]
 (ssh) mount -o remount rw /usr
-(ssh) tar --no-overwrite-dir --no-same-owner -zxf /home/sample_resnet101_quantized.tar.gz -C /usr/
-(ssh) tar --no-overwrite-dir --no-same-owner -zxf /home/sample_resnet101_quantized.tar.gz -C /usr/
-(ssh) tar --no-overwrite-dir --no-same-owner -zxf /opt/model.tar.gz -C /usr/model
+(ssh) tar--no-same-owner -zxf /home/sample_resnet101_quantized.tar.gz -C /usr/
+(ssh) tar --no-same-owner -zxf /home/sample_resnet101_quantized.tar.gz -C /usr/
+(ssh) tar --no-same-owner -zxf /opt/model.tar.gz -C /opt/
 ```
 
 
