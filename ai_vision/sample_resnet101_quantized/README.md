@@ -6,7 +6,7 @@ ResNet101 is a machine learning model that can classify images from the Imagenet
 
 `sample_resnet101 quantized` is a Python-based classify images ROS node that uses QNN for model inference. 
 
-For more information, please refer to  [qrb_ros_samples/ai_vision/sample_object_detection at main · quic-qrb-ros/qrb_ros_samples](https://github.com/quic-qrb-ros/qrb_ros_samples/tree/main/ai_vision/sample_resnet101_quantized)
+For more information, please refer to  [qrb_ros_samples/ai_vision/sample_object_detection at main · qualcomm-qrb-ros/qrb_ros_samples](https://github.com/qualcomm-qrb-ros/qrb_ros_samples/tree/main/ai_vision/sample_resnet101_quantized)
 
 ![](./resource/glasses-output.png)
 

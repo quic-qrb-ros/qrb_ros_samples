@@ -6,7 +6,7 @@ model:
 model_label:
   - mel_filters.npz,https://raw.githubusercontent.com/openai/whisper/refs/heads/main/whisper/assets/mel_filters.npz
   - gpt2.tiktoken,https://raw.githubusercontent.com/openai/whisper/refs/heads/main/whisper/assets/gpt2.tiktoken
-  - audio_service_test.py,https://raw.githubusercontent.com/quic-qrb-ros/qrb_ros_audio_service/refs/heads/main/tests/audio_service_test.py
+  - audio_service_test.py,https://raw.githubusercontent.com/qualcomm-qrb-ros/qrb_ros_audio_service/refs/heads/main/tests/audio_service_test.py
 # apt packages
 apt:
   - libsamplerate0-dev
