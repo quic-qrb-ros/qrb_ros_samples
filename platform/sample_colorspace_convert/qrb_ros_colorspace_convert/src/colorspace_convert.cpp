@@ -93,31 +93,15 @@ bool ColorspaceConvertNode::convert_core(const qrb_ros::transport::type::Image &
   auto input_fd = handler.dmabuf->fd();
   auto output_fd = out_msg->dmabuf->fd();
 
-  int dup_input_fd = dup(input_fd);
-  if (dup_input_fd < 0) {
-    perror("dup input fd failed");
-    close(input_fd);
-    close(output_fd);
-    return -1;
-  }
-
-  int dup_output_fd = dup(output_fd);
-  if (dup_output_fd < 0) {
-    perror("dup fd failed");
-    close(input_fd);
-    close(output_fd);
-    return -1;
-  }
-
   if (latency_fps_test_)
     convert_start_time_ = std::chrono::steady_clock::now();
 
   if (type == "nv12_to_rgb8") {
     out_msg->encoding = "rgb8";
-    success = accelerator_.nv12_to_rgb8(dup_input_fd, dup_output_fd, alignd_width, alignd_height);
+    success = accelerator_.nv12_to_rgb8(input_fd, output_fd, alignd_width, alignd_height);
   } else if (type == "rgb8_to_nv12") {
     out_msg->encoding = "nv12";
-    success = accelerator_.rgb8_to_nv12(dup_input_fd, dup_output_fd, alignd_width, alignd_height);
+    success = accelerator_.rgb8_to_nv12(input_fd, output_fd, alignd_width, alignd_height);
   }
 
   if (latency_fps_test_)
