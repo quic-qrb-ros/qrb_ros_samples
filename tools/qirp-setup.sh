@@ -251,9 +251,8 @@ function scripts_env_setup(){
     else
         #add qualcomm carmel ppa
         echo "Add qualcomm carmel ppa , wait few minutes..."
+        sudo add-apt-repository -y ppa:ubuntu-qcom-iot/qcom-noble-ppa
         sudo add-apt-repository -y ppa:ubuntu-qcom-iot/qirp
-        #echo "deb [trusted=yes] http://10.64.25.66:8888 ./" | sudo tee -a /etc/apt/sources.list
-        # sudo add-apt-repository ppa:carmel-team/noble-release --login
         # apt_packages_base+=(\
             # qnn-tools \
             # libqnn-dev \
