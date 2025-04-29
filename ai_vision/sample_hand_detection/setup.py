@@ -1,3 +1,6 @@
+# Copyright (c) 2025 Qualcomm Innovation Center, Inc. All rights reserved.
+# SPDX-License-Identifier: BSD-3-Clause-Clear
+
 from setuptools import find_packages, setup
 
 package_name = 'sample_hand_detection'
