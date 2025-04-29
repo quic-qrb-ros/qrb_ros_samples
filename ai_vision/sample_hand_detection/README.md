@@ -1,12 +1,14 @@
 # AI Samples hand landmark detection
 
-## overview
+## Overview
 
 `sample_hand_detection` is a Python-based hand recognition ROS node that uses QNN for model inference. 
 
 The model is sourced from MediaPipe Hand Landmark Detector. The MediaPipe Hand Landmark Detector is a machine learning pipeline that predicts bounding boxes and pose skeletons of hands in an image.
 
 This sample allows you to input an image named `input_image.jpg`, then it will publishes the result as ROS topic `handlandmark_result`
+
+For more information, please refer to https://github.com/qualcomm-qrb-ros/qrb_ros_samples/tree/main/ai_vision/sample_hand_detection
 
 ![](./resource/result.png)
 
@@ -33,11 +35,7 @@ This sample allows you to input an image named `input_image.jpg`, then it will p
 
 ### Prerequisites
 
-- `SSH` is enabled in 'Permissive' mode with the steps mentioned in [Log in using SSH](https://docs.qualcomm.com/bundle/publicresource/topics/80-70017-254/how_to.html?vproduct=1601111740013072&latest=true#use-ssh).
-
-- Download Robotics image and QIRP SDK from [QC artifacts](https://artifacts.codelinaro.org/ui/native/qli-ci/flashable-binaries/qirpsdk/) or Generate Robotics image and QIRP SDK with [meta-qcom-robotics-sdk/README.md](https://github.com/qualcomm-linux/meta-qcom-robotics-sdk)
-
-- The prebuilt robotics image is flashed, see [Flash image](https://docs.qualcomm.com/bundle/publicresource/topics/80-70017-254/flash_images.html?vproduct=1601111740013072&latest=true)
+- Please refer to [Settings](https://docs.qualcomm.com/bundle/publicresource/topics/80-70018-265/download-the-prebuilt-robotics-image_3_1.html?vproduct=1601111740013072&version=1.4&facet=Qualcomm%20Intelligent%20Robotics%20Product%20(QIRP)%20SDK) to complete the device and host setup.
 
 ### On Host
 
