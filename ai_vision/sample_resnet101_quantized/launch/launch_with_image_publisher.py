@@ -23,16 +23,11 @@ def generate_launch_description():
     
     return LaunchDescription([
         # Node for sample_resnet101_quantized
-        DeclareLaunchArgument(
-        'model_path',
-        default_value='/opt/model/', 
-        description='Path to the model file'
-        ),
         Node(
             package='sample_resnet101_quantized',  # Replace with the actual package name
             executable='qrb_ros_resnet101',  # Replace with the actual executable name
             output='screen',  # Output logs to terminal
-            parameters=[{'model_path': LaunchConfiguration('model_path')}]
+            parameters=[{'model_path': "/opt/model"}]
         ),
 
         # Node for image_publisher
