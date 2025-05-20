@@ -6,7 +6,7 @@ ResNet101 is a machine learning model that can classify images from the Imagenet
 
 `sample_resnet101 quantized` is a Python-based classify images ROS node that uses QNN for model inference. 
 
-For more information, please refer to  [qrb_ros_samples/ai_vision/sample_object_detection at main · quic-qrb-ros/qrb_ros_samples](https://github.com/quic-qrb-ros/qrb_ros_samples/tree/main/ai_vision/sample_resnet101_quantized)
+For more information, please refer to  https://github.com/qualcomm-qrb-ros/qrb_ros_samples/tree/main/ai_vision/sample_resnet101_quantized)
 
 ![](./resource/glasses-output.png)
 
@@ -21,7 +21,7 @@ For more information, please refer to  [qrb_ros_samples/ai_vision/sample_object_
 | `qrb_ros_resnet101 `    | qrb_ros_resnet101 is a python-based ros jazzy packages realize classify images,  uses QNN htp as model backend. receive image topic , publish classify result topic. |
 | `image_publisher_node ` | image_publisher is  a ros jazzy packages, can publish image ros topic with local path. source link:[ros-perception/image_pipeline: An image processing pipeline for ROS.](https://github.com/ros-perception/image_pipeline) |
 
-## ROS Topics Used in Speech Recognition Pipeline
+## ROS Topics Used in Resnet101 Quantized
 
 | ROS Topic                      | Type                         | Published By            |
 | ------------------------------ | ---------------------------- | ----------------------- |
@@ -56,17 +56,8 @@ colcon build
 2. Install Packages
 
 ```bash
-cd <qirp_decompressed_workspace>/qirp-sdk/qirp_samples/ai_vision/sample_resnet101_quantized/install/sample_resnet101_quantized
-tar -czvf sample_resnet101_quantized.tar.gz lib share
-cd cd <qirp_decompressed_workspace>/qirp-sdk/qirp_samples/ai_vision/sample_resnet101_quantized/
-tar -czvf model.tar.gz model
-scp sample_resnet101_quantized.tar.gz root@[ip-addr]:/home/
-scp model.tar.gz root@[ip-addr]:/opt/
-ssh root@[ip-addr]
-(ssh) mount -o remount rw /usr
-(ssh) tar--no-same-owner -zxf /home/sample_resnet101_quantized.tar.gz -C /usr/
-(ssh) tar --no-same-owner -zxf /home/sample_resnet101_quantized.tar.gz -C /usr/
-(ssh) tar --no-same-owner -zxf /opt/model.tar.gz -C /opt/
+cd <qirp_decompressed_workspace>/qirp-sdk/qirp_samples/ai_vision/sample_resnet101_quantized/
+scp -r install/sample_resnet101_quantized/* root@10.92.129.14:/usr
 ```
 
 
@@ -74,8 +65,9 @@ ssh root@[ip-addr]
 ### On Device
 
 ```bash
-(ssh) export HOME=/home
-(ssh) setenforce 0
-(ssh) source /usr/bin/ros_setup.sh && source /usr/share/qirp-setup.sh
-(ssh) ros2 launch sample_resnet101_quantized  launch_with_image_publisher.py  model_path:=/opt/model/
+(ssh) /usr/share/qirp-setup.sh
+(ssh) ros2 launch sample_resnet101_quantized  launch_with_image_publisher.py
+ or
+(ssh) ros2 launch sample_resnet101_quantized  launch_with_image_publisher.py image_path:=/usr/share/sample_resnet101_quantized/cup.jpg
 ```
+

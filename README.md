@@ -6,10 +6,11 @@ This repository is a comprehensive collection of QRB ROS (Robot Operating System
 
 ## List of samples
 
-|           | Samples                                                      | Description                                                  | Model Source                                                 |
-| --------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| AI Audio  | [speech recognition](ai_audio/sample_speech_recognition/)    | captures the audio input and publishes the ros topic with the speech recognition result | [Whisper-Tiny-En - Qualcomm AI Hub](https://aihub.qualcomm.com/iot/models/whisper_tiny_en?domain=Audio) |
-| AI Vision | [sample resnet101 quantized](ai_vision/sample_resnet101_quantized/) | Python-based classify images ROS node that uses QNN for model inference. | [ResNet101Quantized - Qualcomm AI Hub](https://aihub.qualcomm.com/iot/models/resnet101_quantized?searchTerm=resn) |
+|           | Samples                                                   | Description                                                  | Model Source                                                 |
+| --------- | --------------------------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| AI Vision | [Object detection](ai_vision/sample_object_detection/)    | This is pipline of QRB ROS nodes to realize object detection, including camera/resize/convert/nn/yolo nodes | [YOLOv8-Detection - Qualcomm AI Hub](https://aihub.qualcomm.com/models/yolov8_det?searchTerm=yolo&domain=Computer+Vision) |
+| AI Audio  | [speech recognition](ai_audio/sample_speech_recognition/) | captures the audio input and publishes the ros topic with the speech recognition result | [Whisper-Tiny-En - Qualcomm AI Hub](https://aihub.qualcomm.com/iot/models/whisper_tiny_en?domain=Audio) |
+| AI Vision  | [Hand detection](ai_vision/sample_hand_detection/) |  a Python-based hand recognition ROS node that uses QNN for model inference. | [MediaPipe-Hand-Detection - Qualcomm AI Hub](https://aihub.qualcomm.com/iot/models/mediapipe_hand) |
 
 ## System Requirements
 

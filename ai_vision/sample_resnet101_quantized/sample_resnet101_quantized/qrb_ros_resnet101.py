@@ -43,7 +43,7 @@ class ResNet101QuantizedNode(Node):
         raw_file = open(workdir+"/output/Result_0/class_logits.raw", 'rb')
         raw_data = np.fromfile(raw_file,dtype=np.uint8)
         max_index = np.argmax(raw_data)
-        with open(self.model_path+"imagenet_labels.txt", 'r') as file:
+        with open(self.model_path+"/imagenet_labels.txt", 'r') as file:
             lines = file.readlines()
         
         return lines[max_index]
@@ -55,9 +55,9 @@ class ResNet101QuantizedNode(Node):
             
             cv_image = cv2.resize(cv_image, (224, 224))
             
-            cv_image.astype(np.uint8).tofile(workdir+"/input/input.raw")
+            cv_image.astype(np.uint8).tofile(workdir+"/input.raw")
         
-            command = f"cd {workdir}/input; qtld-net-run --model {self.model_path}/ResNet101Quantized.tflite --input {workdir}/input/input.txt --output {workdir}/output --backend htp"
+            command = f"cd {workdir}; qtld-net-run --model {self.model_path}/ResNet101Quantized.tflite --input {workdir}/input --output {workdir}/output --backend htp"
             subprocess.run(command, stdout=subprocess.DEVNULL, check=True, shell=True)
             result = self.process()
             self.publisher.publish(String(data=result))
@@ -70,9 +70,6 @@ def main(args=None):
     print(f"package_share_directory is {package_share_directory}")
     global workdir 
     workdir = package_share_directory
-    if not os.path.exists(workdir+"/input"):
-        os.makedirs(workdir+"/input" )
-        shutil.copy(package_share_directory+"/input.txt", workdir+"/input/input.txt")
     if not os.path.exists(workdir + "/output"):
         os.makedirs(workdir+"/output" )
         os.chmod(workdir+"/output", 0o777)
