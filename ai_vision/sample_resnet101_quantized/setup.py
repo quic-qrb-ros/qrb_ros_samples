@@ -17,7 +17,7 @@ setup(
         ('share/' + package_name, ['package.xml']),
 	('share/' + package_name, glob('resource/*.jpg')),
         ('lib/' + package_name,[package_name + "/qrb_ros_resnet101.py"]),
-	('share/' + package_name, ['resource/' +"/input.txt"]),
+	('share/' + package_name, ['resource/' +"/input"]),
         ('share/' + package_name + '/launch', ['launch/launch_with_usbcam.py']),
 	('share/' + package_name + '/launch',  ['launch/launch_with_image_publisher.py']),
     ],

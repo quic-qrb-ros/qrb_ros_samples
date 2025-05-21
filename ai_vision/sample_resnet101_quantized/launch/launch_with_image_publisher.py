@@ -17,22 +17,26 @@ def generate_launch_description():
     package_path = get_package_share_directory(package_name)
     #image_path = os.path.join(package_path, 'cup.jpg')  # Construct the relative path
     #image_path = os.path.join(package_path, 'glasses.jpg')
-    image_path = os.path.join(package_path, 'glasses.jpg')
+    #image_path = os.path.join(package_path, 'glasses.jpg')
 
+    image_path_arg = DeclareLaunchArgument(
+    'image_path',
+    default_value=os.path.join(get_package_share_directory(package_name), 'glasses.jpg'),
+    description='Path to the image file'
+    )
+
+    image_path = LaunchConfiguration('image_path')
     logger.info(f'IMAGE_PATH set to: {image_path}')
     
     return LaunchDescription([
+ 
+    image_path_arg,
         # Node for sample_resnet101_quantized
-        DeclareLaunchArgument(
-        'model_path',
-        default_value='/opt/model/', 
-        description='Path to the model file'
-        ),
         Node(
             package='sample_resnet101_quantized',  # Replace with the actual package name
             executable='qrb_ros_resnet101',  # Replace with the actual executable name
             output='screen',  # Output logs to terminal
-            parameters=[{'model_path': LaunchConfiguration('model_path')}]
+            parameters=[{'model_path': "/opt/model"}]
         ),
 
         # Node for image_publisher
