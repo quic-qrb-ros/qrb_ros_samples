@@ -57,7 +57,7 @@ class ResNet101QuantizedNode(Node):
             
             cv_image.astype(np.uint8).tofile(workdir+"/input.raw")
         
-            command = f"cd {workdir}; qtld-net-run --model {self.model_path}/ResNet101Quantized.tflite --input {workdir}/input --output {workdir}/output --backend htp"
+            command = f"cd {workdir}; qtld-net-run --model {self.model_path}/ResNet101Quantized.tflite --input {workdir}/input --output {workdir}/output"
             subprocess.run(command, stdout=subprocess.DEVNULL, check=True, shell=True)
             result = self.process()
             self.publisher.publish(String(data=result))
