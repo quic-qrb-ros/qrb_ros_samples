@@ -1,0 +1,7 @@
+ros-jazzy-sample-resnet101-quantized (0.1.0-0noble) noble; urgency=high
+
+  * first initial for debian release.
+
+ -- Fulan Liu <fulaliu@qti.qualcomm.com>  Fri, 09 May 2025 10:12:57 -0000
+
+
