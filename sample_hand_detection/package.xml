@@ -4,7 +4,7 @@
   <name>sample_hand_detection</name>
   <version>0.1.0</version>
   <description>sample_hand_detection is a Python-based hand recognition ROS node that uses QNN for model inference.</description>
-  <maintainer email="quic_dapeyuan@quicinc.com">root</maintainer>
+  <maintainer email="dapeyuan@qti.qualcomm.com">root</maintainer>
   <license>BSD 3-Clause License</license>
 
   <!-- Build tool -->
