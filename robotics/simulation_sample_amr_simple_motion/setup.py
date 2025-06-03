@@ -17,7 +17,7 @@ setup(
     install_requires=['setuptools'],
     zip_safe=True,
     maintainer='weijshen',
-    maintainer_email='quic_weijshen@quicinc.com',
+    maintainer_email='weijshen@qti.qualcomm.com',
     description='package for simple motion control of QRB AMRs within the simulator',
     license='BSD-3-Clause-Clear',
     tests_require=['pytest'],
