@@ -40,7 +40,7 @@ For more information, please refer to  https://github.com/qualcomm-qrb-ros/qrb_r
 ### On Host
 On the host machine, move to the artifacts directory and decompress the package using the `tar` command.
 
-1. Build projects
+1. Build sample project
 
 ```bash
 #source qirp sdk env
@@ -53,21 +53,50 @@ cd <qirp_decompressed_path>/qirp-sdk/qirp_samples/ai_vision/sample_resnet101_qua
 colcon build
 ```
 
-2. Install Packages
+2. Package and push sample to device
 
 ```bash
+# package and push hand detection models
 cd <qirp_decompressed_workspace>/qirp-sdk/qirp_samples/ai_vision/sample_resnet101_quantized/
-scp -r install/sample_resnet101_quantized/* root@10.92.129.14:/usr
+tar -czvf model.tar.gz model 
+scp model.tar.gz root@[ip-addr]:/opt/
+
+# package and push build result of sample
+cd <qirp_decompressed_path>/qirp-sdk/qirp_samples/ai_vision/sample_resnet101_quantized/install/sample_resnet101_quantized
+tar -czvf sample_resnet101_quantized.tar.gz lib share
+scp sample_resnet101_quantized.tar.gz root@[ip-addr]:/opt/
 ```
 
 
 
 ### On Device
 
+o Login to the device, please use the command `ssh root@[ip-addr]`
+
+**Step 1: Install sample package and model package**
+
 ```bash
-(ssh) /usr/share/qirp-setup.sh
+# Remount the /usr directory with read-write permissions
+(ssh) mount -o remount rw /usr
+
+# Install sample package and model package
+(ssh) tar --no-same-owner -zxf /opt/sample_resnet101_quantized.tar.gz -C /usr/
+(ssh) tar --no-same-owner -zxf /opt/model.tar.gz -C /opt/
+```
+
+**Step 2: Setup runtime environment**
+
+```bash
+(ssh)  source /usr/share/qirp-setup.sh -m
+```
+
+**Step 3: Run sample**
+
+```bash
 (ssh) ros2 launch sample_resnet101_quantized  launch_with_image_publisher.py
  or
 (ssh) ros2 launch sample_resnet101_quantized  launch_with_image_publisher.py image_path:=/usr/share/sample_resnet101_quantized/cup.jpg
 ```
+
+
 
