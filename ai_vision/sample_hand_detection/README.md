@@ -50,7 +50,7 @@ cd <qirp_decompressed_path>/qirp-sdk
 source setup.sh
 
 # build sample
-cd <qirp_decompressed_path>/qirp-samples/demos/qrb_ros_samples/ai_vision/sample_hand_detection
+cd <qirp_decompressed_path>/qirp-sdk/qirp_samples/ai_vision/sample_hand_detection
 colcon build
 ```
 
