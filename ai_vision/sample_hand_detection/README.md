@@ -93,7 +93,7 @@ To Login to the device, please use the command `ssh root@[ip-addr]`
 (ssh) setenforce 0
 
 # setup runtime environment
-(ssh) source /usr/bin/ros_setup.sh && source /usr/share/qirp-setup.sh
+(ssh) source /usr/bin/ros_setup.sh && source /usr/share/qirp-setup.sh -m
 ```
 
 **Step 3: Run sample**
