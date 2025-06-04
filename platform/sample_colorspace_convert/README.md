@@ -9,7 +9,7 @@ Qualcomm's smart devices, such as the RB3 Gen2, use NV12 as the default image co
 - Provide ROS nodes
   - API to convert nv12 to rgb8
   - API to convert rgb8 to nv12
-- Support `dmabuf` fd as input / output
+- Support dmabuf fd as input / output
 - Input / output image receive/send with QRB ROS transport
 - Hardware accelerates with GPU by OpenGL ES
 
