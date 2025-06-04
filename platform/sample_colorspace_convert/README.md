@@ -1,119 +1,117 @@
-# QRB Color Space Conversion ROS Node
+# Platform samples color space conversion
 
 ## Overview
 
-Qualcomm's smart devices, such as the RB3 Gen2, use NV12 as the default image color space conversion format. Generally, the more common color space format is RGB888. To embrace open source and facilitate developers in converting between these two formats, we have developed the color space conversion ROS node. The feature as follows:
+`sample_colorspace_convert` sample application converts between NV12 and RGB888 formats.
 
-- Provide ROS node include
+Qualcomm's smart devices, such as the RB3 Gen2, use NV12 as the default image color space conversion format. However, the more common color space format is RGB888. `sample_colorspace_convert` sample application implements the following:
+
+- Provide ROS nodes
   - API to convert nv12 to rgb8
   - API to convert rgb8 to nv12
-- Support dmabuf fd as input / output
+- Support `dmabuf` fd as input / output
 - Input / output image receive/send with QRB ROS transport
 - Hardware accelerates with GPU by OpenGL ES
 
-## Quick Start
-
-> Note： This document 's build & run is the latest. If it conflict with the online document, please follow this.
-
-We provide two ways to use this package.
-
-<details>
-<summary>Docker</summary>
-
-#### Setup
-Please follow this [steps](https://github.com/qualcomm-qrb-ros/qrb_ros_docker?tab=readme-ov-file#quickstart) to setup docker env.
+For more information, please refer to https://github.com/qualcomm-qrb-ros/qrb_ros_samples/tree/main/platform/sample_colorspace_convert
 
 
-#### Build
 
-```shell
-cd ~/qrb_ros_ws/src/qrb_ros_docker/scripts && \
-bash docker_run.sh
+## Pipeline flow for color space conversion
 
-git clone https://github.com/quic-qrb-ros/lib_mem_dmabuf.git
-git clone https://github.com/quic-qrb-ros/qrb_ros_transport.git
-git clone https://github.com/quic-qrb-ros/qrb_ros_color_space_convert.git
-```
+![pipeline](./resource/pipeline.png)
 
-#### Run
+## ROS Nodes Used in color space conversion
 
-```shell
-export XDG_RUNTIME_DIR=/dev/socket/weston/
-mkdir -p $XDG_RUNTIME_DIR
-export WAYLAND_DISPLAY=wayland-1
+| ROS Node                  | Description                                                                                |
+| ------------------------- | ------------------------------------------------------------------------------------------ |
+| `qrb_ros_camera`          | `qrb_ros_camera` is a ROS package to publish the camera data from camera sensor.           |
+| `colorspace_convert_node` | `colorspace_convert_node` is a ROS package to convert color space between NV12 and RGB888. |
+## ROS Interfaces Used in color space conversion
 
-ros2 launch qrb_ros_colorspace_convert colorspace_convert.launch.py 'conversion_type:=nv12_to_rgb8' 'latency_fps_test:=True'
-```
-
-</details>
- 
-
-<details>
-<summary>QIRP-SDK</summary>
-
-#### Setup
-Please follow this [steps](https://quic-qrb-ros.github.io/main/getting_started/index.html) to setup qirp-sdk env.
+| Name       | input/output | Communicate Type | Message Type                        | Description          |
+| ---------- | ------------ | ---------------- | ----------------------------------- | -------------------- |
+| /image_raw | input        | topic            | `<qrb_ros::transport::type::Image>` | NV12/RGB8 image data |
+| /image     | output       | topic            | `<qrb_ros::transport::type::Image>` | NV12/RGB8 image data |
 
 
-#### Build
+## Use cases on QCLINUX
+
+### Prerequisites
+- Please refer to [Settings](https://docs.qualcomm.com/bundle/publicresource/topics/80-70018-265/download-the-prebuilt-robotics-image_3_1.html?vproduct=1601111740013072&version=1.4&facet=Qualcomm%20Intelligent%20Robotics%20Product%20\(QIRP\)%20SDK) to complete the device and host setup.
+### On Host
+**Step 1: Build sample project**
+On the host machine, move to the artifacts directory and decompress the package using the `tar` command.
 
 ```shell
-# prepare
-mkdir -p <qirp_decompressed_workspace>/qirp-sdk/ros_ws
-cd <qirp_decompressed_workspace>/qirp-sdk/ros_ws
+# set up qirp sdk environment
+tar -zxf qirp-sdk_<qirp_version>.tar.gz
+cd <qirp_decompressed_path>/qirp-sdk
+source setup.sh
 
-git clone https://github.com/quic-qrb-ros/lib_mem_dmabuf.git
-git clone https://github.com/quic-qrb-ros/qrb_ros_transport.git
-git clone https://github.com/quic-qrb-ros/qrb_ros_color_space_convert.git
-
-
-# build
-colcon build --merge-install --packages-skip qrb_ros_transport_test --cmake-args \
-  -DPYTHON_EXECUTABLE=${OECORE_NATIVE_SYSROOT}/usr/bin/python3 \
-  -DPython3_NumPy_INCLUDE_DIR=${OECORE_NATIVE_SYSROOT}/usr/lib/python3.12/site-packages/numpy/core/include \
-  -DPYTHON_SOABI=cpython-312-aarch64-linux-gnu \
-  -DCMAKE_MAKE_PROGRAM=/usr/bin/make \
-  -DBUILD_TESTING=OFF
-
+# build sample
+cd <qirp_decompressed_path>/qirp-samples/platform/sample_colorspace_convert
+colcon build --merge-install --cmake-args ${CMAKE_ARGS}
 ```
 
-#### Run
+**Step 2: Package and push sample to device**
+
 ```shell
-export XDG_RUNTIME_DIR=/dev/socket/weston/
-mkdir -p $XDG_RUNTIME_DIR
-export WAYLAND_DISPLAY=wayland-1
-
-ros2 launch qrb_ros_colorspace_convert colorspace_convert.launch.py 'conversion_type:=nv12_to_rgb8' 'latency_fps_test:=True'
+cd <qirp_decompressed_path>/qirp-samples/platform/sample_colorspace_convert
+tar -czvf sample_colorspace_convert.tar.gz lib share
+scp sample_colorspace_convert.tar.gz root@[ip-addr]:/opt/
 ```
 
+### On Device
+To Login to the device, please use the command `ssh root@[ip-addr]`
 
-</details>
+**Step 1: Install sample package and model package**
 
-<br>
+```shell
+# Remount the /usr directory with read-write permissions
+(ssh) mount -o remount rw /usr
 
+# Install sample package and model package
+(ssh) tar --no-same-owner -zxf /opt/sample_colorspace_convert.tar.gz -C /usr/
+```
 
-You can get more details from [here](https://quic-qrb-ros.github.io/main/index.html).
+**Step 2: Setup runtime environment**
 
-## Supported Types
+```shell
+# Set HOME variable
+(ssh) export HOME=/opt
 
-| QRB ROS Transport Type          | ROS Interfaces          |
-| ------------------------------- | ----------------------- |
-| [qrb_ros::transport::type::Image](./qrb_ros_transport_image_type/include/qrb_ros_transport_image_type/image.hpp) | [sensor_msgs::msg::Image](https://github.com/ros2/common_interfaces/blob/rolling/sensor_msgs/msg/Image.msg) |
+# set SELinux to permissive mode
+(ssh) setenforce 0
 
-## Contributing
+# setup runtime environment
+(ssh) source /usr/bin/ros_setup.sh && source /usr/share/qirp-setup.sh
 
-We would love to have you as a part of the QRB ROS community. Whether you are helping us fix bugs, proposing new features, improving our documentation, or spreading the word, please refer to our [contribution guidelines](https://github.qualcomm.com/jiaxshi/QRB-ROS-repository-template/blob/QRBROS/CONTRIBUTING.md) and [code of conduct](https://github.qualcomm.com/jiaxshi/QRB-ROS-repository-template/blob/QRBROS/CODE_OF_CONDUCT.md).
+# setup weston env
+(ssh) export XDG_RUNTIME_DIR=/dev/socket/weston/
+(ssh) mkdir -p $XDG_RUNTIME_DIR
+(ssh) export WAYLAND_DISPLAY=wayland-1
 
-- Bug report: If you see an error message or encounter failures, please create a [bug report](https://github.qualcomm.com/jiaxshi/QRB-ROS-repository-template/issues)
-- Feature Request: If you have an idea or if there is a capability that is missing and would make development easier and more robust, please submit a [feature request](https://github.qualcomm.com/jiaxshi/QRB-ROS-repository-template/issues)
+# setup share memory
+(ssh) export FASTRTPS_DEFAULT_PROFILES_FILE=/usr/share/qrb_ros_colorspace_convert/config/large_message_profile.xml
+```
 
+**Step 3: Run sample**
 
-## Authors
+```shell
+# Launch the pipeline python launch file
+ros2 launch color_convert.launch.py | grep qrb_ros_camera
+```
 
-- **Vito Wang** - *Initial work* - [violet227 (Vito Wang)](https://github.com/violet227)
-
-See also the list of [Contributors to qualcomm-qrb-ros/qrb_ros_color_space_convert](https://github.com/qualcomm-qrb-ros/qrb_ros_color_space_convert/graphs/contributors) who participated in this project.
-
-## License
-
-Project is licensed under the [BSD-3-clause License](https://spdx.org/licenses/BSD-3-Clause.html). See [LICENSE](https://github.qualcomm.com/jiaxshi/QRB-ROS-repository-template/blob/QRBROS/LICENSE) for the full license text.
+If success, you can see the logs as follows.
+```shell
+/usr/share/qrb_ros_camera/config/camera_info_imx577.yaml
+[component_container-1] [INFO] [0316153886.816795733] [qrb_ros_camera]: camera parameters...pipeline_id:   0
+[component_container-1] [INFO] [0316153886.819027556] [qrb_ros_camera]: init camera
+[component_container-1] [INFO] [0316153886.847274327] [qrb_ros_camera]: Enter, is preview already on: 0
+[component_container-1] [INFO] [0316153886.961631410] [qrb_ros_camera]: start preview done, ret: 0
+[component_container-1] [INFO] [0316153886.961695733] [qrb_ros_camera]: Pipeline start successful. ret: 0
+[component_container-1] [INFO] [0316153892.106624690] [qrb_ros_camera]: camera Pipeline 0, Camera 0, fmt nv12, w x h[640 x 480], str x sli[640 x 480], frame_id 149, frameCnt 150, Fps: 29.9519, ts 316153892106547398 ns, latency 86589 us
+[component_container-1] [INFO] [0316153897.140163385] [qrb_ros_camera]: camera Pipeline 0, Camera 0, fmt nv12, w x h[640 x 480], str x sli[640 x 480], frame_id 300, frameCnt 151, Fps: 30.1862, ts 316153897140137396 ns, latency 86950 us
+...
+```
