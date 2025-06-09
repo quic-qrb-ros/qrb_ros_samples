@@ -45,19 +45,6 @@ def generate_launch_description():
         }],
         extra_arguments=[{'use_intra_process_comms': True}],
         ),
-    ComposableNode(
-        package='qrb_ros_transport_test',
-        plugin='qrb_ros::transport::TestSubComponent',
-        name='test',
-        parameters=[{
-            'test_type': 'qrb_ros::transport::type::Image',
-            'topic_name': '/image',
-            'dump_file': '/data/dump',
-            'dump': True,
-            'dump_camera_info_': False,
-        }],
-        extra_arguments=[{'use_intra_process_comms': True}],
-        )
     ],
     output='screen',
     )

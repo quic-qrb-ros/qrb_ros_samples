@@ -2,9 +2,9 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>qrb_colorspace_convert_lib</name>
-  <version>1.0.0</version>
+  <version>0.1.0</version>
   <description>Convert the color space of image between nv12 and rgb8</description>
-  <maintainer email="quic_wantao@quicinc.com">Vito Wang</maintainer>
+  <maintainer email="wantao@qti.qualcomm.com">Vito Wang</maintainer>
   <license>BSD-3-Clause-Clear</license>
 
   <buildtool_depend>ament_cmake_auto</buildtool_depend>
