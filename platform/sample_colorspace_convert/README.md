@@ -15,7 +15,7 @@ Qualcomm's smart devices, such as the RB3 Gen2, use NV12 as the default image co
 
 For more information, please refer to https://github.com/qualcomm-qrb-ros/qrb_ros_samples/tree/main/platform/sample_colorspace_convert
 
-
+![demo](./resource/demo.png)
 
 ## Pipeline flow for color space conversion
 
@@ -57,9 +57,12 @@ colcon build --merge-install --cmake-args ${CMAKE_ARGS}
 **Step 2: Package and push sample to device**
 
 ```shell
-cd <qirp_decompressed_path>/qirp-samples/platform/sample_colorspace_convert
+cd <qirp_decompressed_path>/qirp-samples/platform/sample_colorspace_convert/install
 tar -czvf sample_colorspace_convert.tar.gz lib share
 scp sample_colorspace_convert.tar.gz root@[ip-addr]:/opt/
+
+cd <qirp_decompressed_path>/qirp-samples/platform/sample_colorspace_convert
+scp color_convert.launch.py root@[ip-addr]:/data/
 ```
 
 ### On Device
@@ -100,7 +103,8 @@ To Login to the device, please use the command `ssh root@[ip-addr]`
 
 ```shell
 # Launch the pipeline python launch file
-ros2 launch color_convert.launch.py | grep qrb_ros_camera
+(ssh) cd /data/
+(ssh) ros2 launch color_convert.launch.py | grep qrb_ros_camera
 ```
 
 If success, you can see the logs as follows.
@@ -113,5 +117,16 @@ If success, you can see the logs as follows.
 [component_container-1] [INFO] [0316153886.961695733] [qrb_ros_camera]: Pipeline start successful. ret: 0
 [component_container-1] [INFO] [0316153892.106624690] [qrb_ros_camera]: camera Pipeline 0, Camera 0, fmt nv12, w x h[640 x 480], str x sli[640 x 480], frame_id 149, frameCnt 150, Fps: 29.9519, ts 316153892106547398 ns, latency 86589 us
 [component_container-1] [INFO] [0316153897.140163385] [qrb_ros_camera]: camera Pipeline 0, Camera 0, fmt nv12, w x h[640 x 480], str x sli[640 x 480], frame_id 300, frameCnt 151, Fps: 30.1862, ts 316153897140137396 ns, latency 86950 us
-...
+```
+
+The input image color space is `NV12`
+```shell
+(ssh) ros2 topic echo /image_raw | grep "encoding"
+encoding: nv12
+```
+
+The output image color space is `RGB888`
+```shell
+(ssh) ros2 topic echo /image | grep "encoding"
+encoding: rgb8
 ```
