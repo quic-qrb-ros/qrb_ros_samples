@@ -68,13 +68,13 @@ scp color_convert.launch.py root@[ip-addr]:/data/
 ### On Device
 To Login to the device, please use the command `ssh root@[ip-addr]`
 
-**Step 1: Install sample package and model package**
+**Step 1: Install sample package**
 
 ```shell
 # Remount the /usr directory with read-write permissions
 (ssh) mount -o remount rw /usr
 
-# Install sample package and model package
+# Install sample package
 (ssh) tar --no-same-owner -zxf /opt/sample_colorspace_convert.tar.gz -C /usr/
 ```
 
