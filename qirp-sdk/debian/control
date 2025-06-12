@@ -1,0 +1,12 @@
+Source: qirp-sdk
+Section: misc
+Priority: optional
+Maintainer: Dapeng Yuan <dapeyuan@qti.qualcomm.com>
+Build-Depends: debhelper (>= 9.0.0)
+Homepage: 
+Standards-Version: 3.9.2
+
+Package: qirp-sdk
+Architecture: any
+Depends: ${misc:Depends}, qcom-battery-client, qcom-battery-service, qcom-sensors-service, ros-jazzy-lib-mem-dmabuf, ros-jazzy-ocr-msg, ros-jazzy-ocr-service, ros-jazzy-qrb-ros-battery, ros-jazzy-qrb-ros-imu, ros-jazzy-qrb-ros-system-monitor, ros-jazzy-qrb-ros-system-monitor-interfaces, ros-jazzy-qrb-ros-transport-image-type, ros-jazzy-qrb-ros-transport-imu-type, ros-jazzy-qrb-ros-transport-point-cloud2-type, ros-jazzy-qrb-sensor-client
+Description: The Qualcomm® Intelligent Robotics (QIR) SDK is a collection of components that enable you to develop robotic features on Qualcomm platforms. This SDK is applicable to the Qualcomm Linux releases.
