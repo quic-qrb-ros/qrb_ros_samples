@@ -24,11 +24,11 @@ else
     echo "model $model_path/MediaPipeHandLandmarkDetector.tflite not exit."
     sudo wget https://huggingface.co/qualcomm/MediaPipe-Hand-Detection/resolve/0d0b12ccd12b96457185ff9cfab75eb7c7ab3ad6/MediaPipeHandLandmarkDetector.tflite?download=true -O $model_path/MediaPipeHandLandmarkDetector.tflite
 fi
-if [ -f "$model_path/anchors_hand.npy" ]; then
-    echo "anchor $model_path/anchors_hand.npy exit."
+if [ -f "$model_path/anchors_palm.npy" ]; then
+    echo "anchor $model_path/anchors_palm.npy exit."
 else
-    echo "anchor $model_path/anchors_hand.npy not exit."
-    sudo wget https://raw.githubusercontent.com/zmurez/MediaPipePyTorch/65f2549ba35cd61dfd29f402f6c21882a32fabb1/anchors_palm.npy -O $model_path/anchors_hand.npy
+    echo "anchor $model_path/anchors_palm.npy not exit."
+    sudo wget https://raw.githubusercontent.com/zmurez/MediaPipePyTorch/65f2549ba35cd61dfd29f402f6c21882a32fabb1/anchors_palm.npy -O $model_path/anchors_palm.npy
 fi
 
 echo "finish post install"
