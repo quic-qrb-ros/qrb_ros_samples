@@ -282,63 +282,10 @@ ROS_DISTRO=jazzy
 
 
 apt_packages_base=( \
-    ros-$ROS_DISTRO-ros-base \
-    ros-$ROS_DISTRO-cv-bridge \
-    ros-$ROS_DISTRO-vision-msgs \
-    ros-$ROS_DISTRO-sensor-msgs \
-    ros-$ROS_DISTRO-usb-cam  \
-    ros-$ROS_DISTRO-rclcpp  \
-    ros-$ROS_DISTRO-std-msgs \
-    ros-$ROS_DISTRO-fastcdr  \
-    ros-$ROS_DISTRO-rosidl-default-runtime  \
-    ros-$ROS_DISTRO-ocr-msg  \
-    ros-$ROS_DISTRO-rclcpp-components  \
-    ros-$ROS_DISTRO-rcutils  \
-    qnn-tools \
-    libqnn-dev \
-    libqnn1 \
-    # libsndfile1-dev \
-    # libhdf5-dev \
-    tesseract-ocr \
-    libopencv-dev \
-    python3-numpy \
-    python3-opencv \
-    python-is-python3 \
-    python3-pip \
-    python3-colcon-common-extensions \
-    python3-pandas \
-    wget \
-    libpulse-dev \
-    python3-requests \
-    vim \
-    unzip \
-    v4l-utils \
 )
-
 #qrb ros packages
-apt_packages_base+=( \
-    ros-$ROS_DISTRO-qrb-ros-transport-image-type \
-    ros-$ROS_DISTRO-qrb-ros-transport-imu-type \
-    ros-$ROS_DISTRO-qrb-ros-transport-point-cloud2-type \
-    ros-$ROS_DISTRO-lib-mem-dmabuf \
-    ros-jazzy-orbbec-camera  \
-    ros-jazzy-orbbec-camera-msgs \
-    ros-jazzy-qrb-ros-transport-point-cloud2-type \
-    ros-jazzy-rplidar-ros \
-    ros-jazzy-sample-hand-detection \
-    ros-jazzy-sample-resnet101-quantized \
-    ros-jazzy-simulation-sample-amr-simple-motion \
-    ros-$ROS_DISTRO-ocr-msg  \
-    ros-$ROS_DISTRO-ocr-service  \
-    ros-$ROS_DISTRO-qrb-ros-system-monitor  \
-    ros-$ROS_DISTRO-qrb-ros-system-monitor-interfaces  \
-    qcom-battery-client  \
-    qcom-battery-service  \
-    ros-$ROS_DISTRO-qrb-ros-battery  \
-    ros-$ROS_DISTRO-qrb-ros-imu  \
-
+apt_packages_base+=( \    
 )
-
 model=()
 model_label=()
 
@@ -391,11 +338,8 @@ function scripts_env_setup(){
         pip3 uninstall numpy
     else          
         #add ros apt source
-        # sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
-        # echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
-        export ROS_APT_SOURCE_VERSION=$(curl -s https://api.github.com/repos/ros-infrastructure/ros-apt-source/releases/latest | grep -F "tag_name" | awk -F\" '{print $4}')
-        curl -L -o /tmp/ros2-apt-source.deb "https://github.com/ros-infrastructure/ros-apt-source/releases/download/${ROS_APT_SOURCE_VERSION}/ros2-apt-source_${ROS_APT_SOURCE_VERSION}.$(. /etc/os-release && echo $VERSION_CODENAME)_all.deb" # If using Ubuntu derivates use $UBUNTU_CODENAME
-        sudo apt install /tmp/ros2-apt-source.deb
+        sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
+        echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null  
         if [ $? -eq 0 ]; then
             echo "add ros base successfully "
         else
@@ -403,14 +347,7 @@ function scripts_env_setup(){
             exit 1
         fi
     fi
-    
-    sudo apt update
-    if [ $? -eq 0 ]; then
-        echo "apt update successfully "
-    else
-        echo "apt update fail"
-        exit 1
-    fi
+    sudo apt update && sudo apt upgrade -y
 
     echo "apt install base pkgs ${apt_packages_base[@]} ... "
     #install apt pkgs
