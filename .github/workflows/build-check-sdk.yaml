@@ -60,15 +60,15 @@ jobs:
           . environment-setup-armv8-2a-qcom-linux
           cd ${WORKSPACE}
           export AMENT_PREFIX_PATH="${OECORE_NATIVE_SYSROOT}/usr:${OECORE_TARGET_SYSROOT}/usr"
-          export PYTHONPATH=${PYTHONPATH}:${OECORE_NATIVE_SYSROOT}/usr/lib/python3.12/site-packages/:${OECORE_TARGET_SYSROOT}/usr/lib/python3.12/site-packages/
-
-          colcon build --continue-on-error --cmake-args \
-            -DCMAKE_TOOLCHAIN_FILE=${OE_CMAKE_TOOLCHAIN_FILE} \
-            -DPYTHON_EXECUTABLE=${OECORE_NATIVE_SYSROOT}/usr/bin/python3 \
+          export PYTHONPATH=${OECORE_NATIVE_SYSROOT}/usr/lib/python3.12/site-packages/:${OECORE_TARGET_SYSROOT}/usr/lib/python3.12/site-packages/
+          export CMAKE_ARGS="-DPYTHON_EXECUTABLE=${OECORE_NATIVE_SYSROOT}/usr/bin/python3 \
             -DPython3_NumPy_INCLUDE_DIR=${OECORE_NATIVE_SYSROOT}/usr/lib/python3.12/site-packages/numpy/core/include \
             -DCMAKE_MAKE_PROGRAM=/usr/bin/make \
-            -DBUILD_TESTING=OFF
-
+            -DSYSROOT_LIBDIR=${OECORE_TARGET_SYSROOT}/usr/lib \
+            -DSYSROOT_INCDIR=${OECORE_TARGET_SYSROOT}/usr/include \
+            -DPYTHON_SOABI=cpython-312-aarch64-linux-gnu \
+            -DBUILD_TESTING=OFF"
+          colcon build --merge-install --continue-on-error --cmake-args ${CMAKE_ARGS}
       - name: Publish artifacts
         continue-on-error: true
         run: |

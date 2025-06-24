@@ -50,7 +50,7 @@ cd <qirp_decompressed_path>/qirp-sdk
 source setup.sh
 
 # build sample
-cd <qirp_decompressed_path>/qirp-sdk/qirp_samples/ai_vision/sample_hand_detection
+cd <qirp_decompressed_path>/qirp-sdk/qirp-samples/ai_vision/sample_hand_detection
 colcon build
 ```
 
@@ -58,12 +58,12 @@ colcon build
 
 ```bash
 # package and push hand detection models
-cd <qirp_decompressed_path>/qirp-samples/demos/qrb_ros_samples/ai_vision/sample_hand_detection
+cd <qirp_decompressed_path>/qirp-sdk/qirp-samples/ai_vision/sample_hand_detection
 tar -czvf model_hand_detection.tar.gz model resource/input_image.jpg
 scp model_hand_detection.tar.gz root@[ip-addr]:/opt/
 
 # package and push build result of sample
-cd <qirp_decompressed_path>/qirp-samples/demos/qrb_ros_samples/ai_vision/sample_hand_detection/install/sample_hand_detection
+cd <qirp_decompressed_path>/qirp-sdk/qirp-samples/ai_vision/sample_hand_detection/install/sample_hand_detection
 tar -czvf sample_hand_detection.tar.gz lib share
 scp sample_hand_detection.tar.gz root@[ip-addr]:/opt/
 ```

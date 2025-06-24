@@ -1,7 +1,5 @@
 # Copyright (c) 2025 Qualcomm Innovation Center, Inc. All rights reserved.
 # SPDX-License-Identifier: BSD-3-Clause-Clear
-
-
 import os
 import rclpy
 from rclpy.node import Node
@@ -78,12 +76,17 @@ def main(args=None):
     node = ResNet101QuantizedNode() 
        
     try:
+        node.get_logger().info("Node started. Press Ctrl+C to stop...")
         rclpy.spin(node)
     except KeyboardInterrupt:
         node.get_logger().info('Node stopped.')
     finally:
         node.destroy_node()
-        rclpy.shutdown()
+        if rclpy.ok():
+            rclpy.shutdown()
+            print("Shutdown executed safely.")
+        else:
+            print("Shutdown skipped: Context already invalid.")
 
 if __name__ == '__main__':
     main()
