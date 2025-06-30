@@ -359,8 +359,6 @@ function ubuntu_setup(){
     try_times=5     
     if [ ! -f "$DIR/env_check" ]; then
         scripts_env_setup
-        download_qrb_ros_node $try_times
-        download_depends
         touch $DIR/env_check
     fi    
     setup_env
@@ -443,69 +441,8 @@ function scripts_env_setup(){
     
 }
 
-function download_qrb_ros_node(){
-    cd $DIR/src
-    local N=$1
-    if [ $((N -1)) == 0 ];then
-        echo "try to git clone $node $try_times times, fail"
-        exit 1
-    fi
-
-    for node in ${qrb_ros_node[@]};do
-        if [ -f $DIR/src/$(echo $node | awk -F'/' '{print $NF}').done ]; then 
-            echo "$node has been download in $DIR/src"
-        else
-            git clone $node
-            if [ $? -eq 0 ]; then
-                echo "git clone $node successfully "
-                touch $DIR/src/$(echo $node | awk -F'/' '{print $NF}').done
-            else
-                download_qrb_ros_node $((N-1))
-                exit 1
-            fi
-        fi
-    done
-}
-
-function download_depends(){
-    echo "apt install pkgs ${apt_packages[@]} ... "
-    #install apt pkgs
-    search_item=""
-    for package in "${apt_packages[@]}"; do
-        if [[ $package == $search_item ]];then
-            echo "$package has been install"
-        else
-            sudo  DEBIAN_FRONTEND=noninteractive apt-get install -y $package   --fix-missing
-            if [ $? -eq 0 ]; then
-                echo "apt-get install -y  $package successfully "
-            else
-                echo "apt-get install -y  $package  fail"
-                exit 1
-            fi
-            search_item+=$package
-        fi
-    done    
-    echo "pip install base pkgs ${pip_packages[@]} ... "
-    search_item=""
-    #install pip pkgs
-    for package in "${pip_packages[@]}"; do
-        if [[ $package == $search_item ]];then
-            echo "$package has been install"
-        else
-            sudo pip3 install --user --upgrade --force-reinstall $package
-            if [ $? -eq 0 ]; then
-                echo "pip install $package successfully "
-            else
-                echo "pip install $package fail"
-                exit 1
-            fi
-            search_item+=$package
-        fi
-    done
-}
-
 function ubuntu_show_help() {
-    echo "Usage: source /usr/share/qirp-setup.sh [OPTION]"
+    echo "qirp sdk setup scripts is to Usage: source /usr/share/qirp-setup.sh [OPTION]"
     echo ""
     echo "Options:"
     echo "  -h, --help        Show this help message."
